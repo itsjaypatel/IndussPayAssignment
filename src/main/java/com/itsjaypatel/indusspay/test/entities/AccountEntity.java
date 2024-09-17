@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BankEntity {
+public class AccountEntity {
 
     @Id
     private String accountNumber;
@@ -19,8 +19,4 @@ public class BankEntity {
     private String bankName;
 
     private String bankIfsc;
-
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
 }

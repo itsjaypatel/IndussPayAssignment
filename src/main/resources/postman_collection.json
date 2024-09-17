@@ -1,0 +1,100 @@
+{
+	"info": {
+		"_postman_id": "d11a38f6-36fb-44e5-8ee0-13e3e3087d18",
+		"name": "Indusspay Assignment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "19902902"
+	},
+	"item": [
+		{
+			"name": "Add User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Jay\",\n    \"lastName\": \"Patel\",\n    \"email\": \"jaypatel@email.com\",\n    \"phone\": \"6355226128\",\n    \"bankName\": \"SBI\",\n    \"bankIfsc\": \"SBI0001\",\n    \"accountNumber\":\"AC6355226127\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8080/user/add"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 2,\n    \"customerName\" : \"Raju Stationary\",\n    \"service\": \"UPI\",\n    \"amount\": 1000,\n    \"gst\": 0.1,\n    \"commission\": 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8080/txn/add"
+			},
+			"response": []
+		},
+		{
+			"name": "Find Txn Beteen Amount Range",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/txn/amount/1/1000?userId=2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"txn",
+						"amount",
+						"1",
+						"1000"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Txn Order By Amount Ascending",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8080/sort/amount"
+			},
+			"response": []
+		},
+		{
+			"name": "Find Txn By User Ids",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userIds\": [1]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8080/txn/get/details"
+			},
+			"response": []
+		}
+	]
+}

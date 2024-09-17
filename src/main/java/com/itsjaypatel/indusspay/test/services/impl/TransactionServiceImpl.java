@@ -1,12 +1,13 @@
 package com.itsjaypatel.indusspay.test.services.impl;
 
-import com.itsjaypatel.indusspay.test.dtos.BankDto;
+import com.itsjaypatel.indusspay.test.dtos.AccountDto;
 import com.itsjaypatel.indusspay.test.dtos.TransactionDto;
 import com.itsjaypatel.indusspay.test.dtos.UserDto;
+import com.itsjaypatel.indusspay.test.entities.AccountEntity;
 import com.itsjaypatel.indusspay.test.entities.TransactionEntity;
 import com.itsjaypatel.indusspay.test.entities.UserEntity;
 import com.itsjaypatel.indusspay.test.exceptions.BadRequestException;
-import com.itsjaypatel.indusspay.test.repositories.BankRepository;
+import com.itsjaypatel.indusspay.test.repositories.AccountRepository;
 import com.itsjaypatel.indusspay.test.repositories.TransactionRepository;
 import com.itsjaypatel.indusspay.test.repositories.UserRepository;
 import com.itsjaypatel.indusspay.test.services.TransactionService;
@@ -28,7 +29,6 @@ public class TransactionServiceImpl implements TransactionService {
     private final UserRepository userRepository;
     private final TransactionRepository transactionRepository;
     private final ModelMapper modelMapper;
-    private final BankRepository bankRepository;
 
     @Override
     public void create(TransactionDto request) {
@@ -73,9 +73,16 @@ public class TransactionServiceImpl implements TransactionService {
 
         List<TransactionEntity> transactions = transactionRepository
                 .findByUserIdAndAmountBetween(userId,minAmount,maxAmount);
+        if(transactions.isEmpty()){
+            throw new BadRequestException("No Transaction found");
+        }
 
-        UserDto userDetail = userRepository.findById(userId).map(user -> modelMapper.map(user, UserDto.class)).orElse(null);
-        BankDto bankDetail = bankRepository.findByUserId(userId).map(bank -> modelMapper.map(bank,BankDto.class)).orElse(null);
+        UserEntity userEntity = transactions.getFirst().getUser();
+        AccountEntity accountEntity = userEntity.getAccount();
+
+        UserDto userDetail = modelMapper.map(userEntity, UserDto.class);
+        AccountDto bankDetail = modelMapper.map(accountEntity, AccountDto.class);
+        bankDetail.setUserId(userDetail.getId());
 
         Map<String,Object> response = new HashMap<>();
         response.put("txns",

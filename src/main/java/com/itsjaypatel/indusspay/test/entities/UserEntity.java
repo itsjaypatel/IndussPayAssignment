@@ -26,4 +26,8 @@ public class UserEntity {
 
     @Column(unique = true)
     private String phone;
+
+    @OneToOne
+    @JoinColumn(name = "account_no")
+    private AccountEntity account;
 }
